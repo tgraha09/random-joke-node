@@ -1,5 +1,5 @@
 console.log("First web service starting up ...");
-
+//https://github.com/tonethar/IGME-430-Fall-2021/blob/main/hw-notes/HW-random-jokes-plus.md#phase1
 // 1 - pull in the HTTP server module
 const http = require('http');
 
@@ -12,34 +12,10 @@ const path = require('path');
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
 // 4 - here's our index page
-const indexPage = `
-<html>
-  <head>
-    <title>Random Number Web Service</title>
-  </head>
-  <body>
-    <h1>Random Number Web Service</h1>
-    <p>
-      Random Number Web Service - the endpoint is here --> 
-      <a href="/random-number">random-number</a> or <a href="/random-number?max=10">random-number?max=10</a>
-    </p>
-  </body>
-</html>`;
+
 
 // 5 - here's our 404 page
-const errorPage = `<html>
-<head>
-  <title>404 - File Not Found!</title>
-</head>
-<body>
-  <h1>404 - File Not Found!</h1>
-  <p> Check your URL, or your typing!!
-  </p>
-  <p>:-O
-  </p>
-</body>
-</html>
-`
+
 const getRandomNumberJSON = (max=1)=>{
     max = Number(max)
     max = !max ? 1 : max
@@ -118,20 +94,15 @@ const onRequest = (request, response) => {
     console.log("pathname=", pathname);
 
     if (pathname == "/random-joke"){
-      //const params = query.parse(parsedUrl.query);
-      //const max = params.max;
-      //console.log("params=", params);
-      //console.log("max=", max);
-      //const params = Object.fromEntries(urlSearchParams.entries());
-      //console.log(params);
-      //console.log(JSON.parse(parsedUrl.query));
+      
       response.writeHead(200, {'Content-Type': 'text/html'})
-      response.write(JSON.stringify(jokes));
+    //  response.write(JSON.stringify(jokes[1]));
+      //console.log();
       response.end()
   }
   else{
       response.writeHead(404, {'Content-Type': 'text/html'})
-      response.write(errorPage);
+    //  response.write(errorPage);
       response.end()
   }
     
