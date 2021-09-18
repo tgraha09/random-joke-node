@@ -1,8 +1,5 @@
 // npm i --save-dev eslint eslint-config-airbnb eslint-plugin-import
 const http = require('http');
-const url = require('url');
-const query = require('querystring');
-const path = require('path');
 const htmlHandler = require('./htmlResponses');
 const jsonHandler = require('./jsonResponses');
 
@@ -31,7 +28,6 @@ const port = process.env.PORT || process.env.NODE_PORT || 3000;
 // we will also doing our query parameter validation here
 
 const urlStruct = {
-  '/':htmlHandler.getIndexResponse,
   '/random-joke': jsonHandler.getRandomJokeJSON,
   notFound: htmlHandler.get404Response,
 };
@@ -41,13 +37,13 @@ const urlStruct = {
 // note that in this course we'll be using arrow functions 100% of the time in our server-side code
 const onRequest = (request, response) => {
   // console.log(request.headers);
-  const parsedUrl = url.parse(request.url);
-  const { pathname } = parsedUrl;
-  console.log('parsedUrl=', parsedUrl);
+  const { url } = request;
+  
+  console.log('Url: ', url);
   // console.log("pathname=", pathname);
   
-  if (urlStruct[pathname]) {
-    urlStruct[pathname](request, response);
+  if (urlStruct[url]) {
+    urlStruct[url](request, response);
   } else {
     urlStruct.notFound(request, response);
   }
