@@ -31,6 +31,7 @@ const port = process.env.PORT || process.env.NODE_PORT || 3000;
 // we will also doing our query parameter validation here
 
 const urlStruct = {
+  '/':htmlHandler.getIndexResponse,
   '/random-joke': jsonHandler.getRandomJokeJSON,
   notFound: htmlHandler.get404Response,
 };
@@ -44,7 +45,7 @@ const onRequest = (request, response) => {
   const { pathname } = parsedUrl;
   console.log('parsedUrl=', parsedUrl);
   // console.log("pathname=", pathname);
-
+  
   if (urlStruct[pathname]) {
     urlStruct[pathname](request, response);
   } else {
