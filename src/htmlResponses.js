@@ -10,7 +10,7 @@ const errorPage = `<html>
   </p>
 </body>
 </html>
-`
+`;
 
 const indexPage = `
 <html>
@@ -26,10 +26,19 @@ const indexPage = `
   </body>
 </html>`;
 
-const get404Response = (request, response) => {
+const getIndexResponse = (request, response) => {
+  response.writeHead(200, { 'Content-Type': 'text/html' });
+  response.write(indexPage);
+  response.end();
+};
 
-}
+const get404Response = (request, response) => {
+  response.writeHead(404, { 'Content-Type': 'text/html' });
+  response.write(errorPage);
+  response.end();
+};
 
 module.exports = {
-    get404Response
-}
+  getIndexResponse,
+  get404Response,
+};
