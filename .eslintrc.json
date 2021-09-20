@@ -12,5 +12,6 @@
     },
     "rules": {
         "no-unused-vars": "warn"
-    }
+    },
+    "eslint no-plusplus": ["error", { "allowForLoopAfterthoughts": true }]
 }
