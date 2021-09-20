@@ -59,7 +59,7 @@ const getRandomJokesJSON = (request, response, params) => {
 };
 const getRandomJokeJSON = (request, response, params) => {
   
-  let limit = params.query.limit
+  
   response.writeHead(200, { 'Content-Type': 'application/json' });
   response.write(getRandomJoke(1));
   response.end();
