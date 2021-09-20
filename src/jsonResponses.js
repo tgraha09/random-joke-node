@@ -36,7 +36,7 @@ const jokes = [
 
 
 
-const getRandomJoke = (limit=1) => {
+const getRandomJoke = (limit) => {
   limit = Number(limit) //cast as number
   limit = !limit ? 1 : limit
   limit = limit < 1 ? 1 : limit
