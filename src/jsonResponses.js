@@ -1,3 +1,4 @@
+
 const jokes = [
 
   {
@@ -33,18 +34,50 @@ const jokes = [
 
 ];
 
-const getRandomJoke = () => {
-  const number = Math.floor(Math.random() * jokes.length);
-  const joke = jokes[number];
-  return JSON.stringify(joke);
-};
+function shuffleArray(array) {
+  for (var i = array.length - 1; i > 0; i--) {
+  
+      // Generate random number
+      var j = Math.floor(Math.random() * (i + 1));
+                  
+      var temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
+  }
+      
+  return array;
+}
 
-const getRandomJokeJSON = (request, response) => {
+const getRandomJoke = (limit=1) => {
+  limit = Number(limit) //cast as number
+  limit = !limit ? 1 : limit
+  limit = limit < 1 ? 1 : limit
+  limit = limit > jokes.length ? jokes.length : limit
+  let arr = []
+  for (let i = 0; i < limit; i++) {
+    const number = Math.floor(Math.random() * jokes.length);
+    const joke = jokes[number];
+    arr.push(joke)
+  }
+  
+  return JSON.stringify(arr);
+};
+const getRandomJokesJSON = (request, response, params) => {
+  
+  let limit = params.query.limit
   response.writeHead(200, { 'Content-Type': 'application/json' });
-  response.write(getRandomJoke());
+  response.write(getRandomJoke(limit));
+  response.end();
+};
+const getRandomJokeJSON = (request, response, params) => {
+  
+  let limit = params.query.limit
+  response.writeHead(200, { 'Content-Type': 'application/json' });
+  response.write(getRandomJoke(1));
   response.end();
 };
 
 module.exports = {
   getRandomJokeJSON,
+  getRandomJokesJSON
 };

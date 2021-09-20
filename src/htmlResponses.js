@@ -15,13 +15,13 @@ const errorPage = `<html>
 const indexPage = `
 <html>
   <head>
-    <title>Random Number Web Service</title>
+    <title>Random Joke Web Service</title>
   </head>
   <body>
-    <h1>Random Number Web Service</h1>
+    <h1>Random Joke Web Service</h1>
     <p>
-      Random Number Web Service - the endpoint is here --> 
-      <a href="/random-number">random-number</a> or <a href="/random-number?max=10">random-number?max=10</a>
+      Random Joke Web Service - the endpoint is here --> 
+      <a href="/random-joke">random-joke</a> or <a href="/random-jokes?limit=10">random-jokes?limit=10</a>
     </p>
   </body>
 </html>`;

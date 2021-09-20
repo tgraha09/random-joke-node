@@ -1,8 +1,9 @@
 // npm i --save-dev eslint eslint-config-airbnb eslint-plugin-import
+//https://github.com/tonethar/IGME-430-Fall-2021/blob/main/hw-notes/HW-random-jokes-plus.md#phase2
 const http = require('http');
 const htmlHandler = require('./htmlResponses');
 const jsonHandler = require('./jsonResponses');
-
+const url = require('url');
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
 // 4 - here's our index page
@@ -28,7 +29,9 @@ const port = process.env.PORT || process.env.NODE_PORT || 3000;
 // we will also doing our query parameter validation here
 
 const urlStruct = {
+  '/': htmlHandler.getIndexResponse,
   '/random-joke': jsonHandler.getRandomJokeJSON,
+  '/random-jokes':jsonHandler.getRandomJokesJSON,
   notFound: htmlHandler.get404Response,
 };
 
@@ -37,15 +40,16 @@ const urlStruct = {
 // note that in this course we'll be using arrow functions 100% of the time in our server-side code
 const onRequest = (request, response) => {
   // console.log(request.headers);
-  const { url } = request;
-  
-  console.log('Url: ', url);
-  // console.log("pathname=", pathname);
-  
-  if (urlStruct[url]) {
-    urlStruct[url](request, response);
+  let path = request.url//request.url
+  let params = url.parse(path, true)
+  let pathname = params.pathname
+  console.log(params);
+ 
+  if (urlStruct[pathname]) {
+    urlStruct[pathname](request, response, params);
   } else {
     urlStruct.notFound(request, response);
+    //urlStruct['/random-joke'](request, response, params);
   }
 };
 
