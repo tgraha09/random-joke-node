@@ -57,15 +57,8 @@ const getRandomJokesJSON = (request, response, params) => {
   response.write(getRandomJoke(limit));
   response.end();
 };
-const getRandomJokeJSON = (request, response, params) => {
-  
-  
-  response.writeHead(200, { 'Content-Type': 'application/json' });
-  response.write(getRandomJoke(1));
-  response.end();
-};
+
 
 module.exports = {
-  getRandomJokeJSON,
   getRandomJokesJSON
 };
