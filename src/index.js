@@ -44,7 +44,7 @@ const onRequest = (request, response) => {
   let params = url.parse(path, true)
   let pathname = params.pathname
   console.log(params);
- 
+  console.log(url.parse(path, true));
   if (urlStruct[pathname]) {
     urlStruct[pathname](request, response, params);
   } else {
