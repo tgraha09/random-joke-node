@@ -43,7 +43,7 @@ const getRandomJoke = (lim) => {
   limit = limit < 1 ? 1 : limit
   limit = limit > jokes.length ? jokes.length : limit
   let arr = []
-  for (let i = 0; i < limit; i++) {
+  for (let i = 0; i < limit; i+1) {
     const number = Math.floor(Math.random() * jokes.length);
     const joke = jokes[number];
     arr.push(joke)
