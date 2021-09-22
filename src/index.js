@@ -44,14 +44,13 @@ const onRequest = (request, response) => {
   const path = request.url;// request.url
   const params = url.parse(path, true);
   const { pathname } = params;
-
-  // console.log(acceptedTypes);
-
+  const acceptedTypes = request.headers.accept.split(',');
+  
   if (urlStruct[pathname]) {
-    urlStruct[pathname](request, response, params);
+    urlStruct[pathname](request, response, params, acceptedTypes);
   } else {
     urlStruct.notFound(request, response);
-    // urlStruct['/random-joke'](request, response, params);
+    
   }
 };
 

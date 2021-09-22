@@ -63,9 +63,8 @@ const getXML = (joke) => {
   </joke>`;
 };
 
-const getRandomJokesJSON = (request, response, params) => {
+const getRandomJokesJSON = (request, response, params, acceptedTypes) => {
   const { limit } = params.query;
-  const acceptedTypes = request.headers.accept.split(',');
   const randomJokes = getRandomJoke(limit);
   if (acceptedTypes.includes('text/xml')) {
     let jokeXML = '<joke>';
@@ -93,6 +92,6 @@ const getRandomJokesJSON = (request, response, params) => {
 
 module.exports = {
   getRandomJokesJSON,
-  getRandomJoke,
+  
 
 };
