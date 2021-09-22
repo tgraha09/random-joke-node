@@ -1,4 +1,3 @@
-
 const jokes = [
 
   {
@@ -34,32 +33,66 @@ const jokes = [
 
 ];
 
-
-
-const getRandomJoke = (lim) => {
-  let limit = lim 
-  limit = Number(limit) //cast as number
-  limit = !limit ? 1 : limit
-  limit = limit < 1 ? 1 : limit
-  limit = limit > jokes.length ? jokes.length : limit
-  let arr = []
-  for (let i = 0; i < limit; i+=1) {
-    const number = Math.floor(Math.random() * jokes.length);
-    const joke = jokes[number];
-    arr.push(joke)
-  }
-  
-  return JSON.stringify(arr);
-};
-const getRandomJokesJSON = (request, response, params) => {
-  
-  let limit = params.query.limit
-  response.writeHead(200, { 'Content-Type': 'application/json' });
-  response.write(getRandomJoke(limit));
+const respond = (request, response, content, type) => {
+  response.writeHead(200, { 'Content-Type': type });
+  response.write(content);
   response.end();
 };
 
+const getRandomJoke = (lim) => {
+  let limit = lim;
+  limit = Number(limit); // cast as number
+  limit = !limit ? 1 : limit;
+  limit = limit < 1 ? 1 : limit;
+  limit = limit > jokes.length ? jokes.length : limit;
+  const arr = [];
+  for (let i = 0; i < limit; i += 1) {
+    const number = Math.floor(Math.random() * jokes.length);
+    const joke = jokes[number];
+    arr.push(joke);
+  }
+
+  return JSON.stringify(arr);
+};
+const getXML = (joke) => {
+  const { q } = joke;
+  const { a } = joke;
+  return `<joke>
+  <q>${q}</q>
+  <a>${a}</a>
+  </joke>`;
+};
+
+const getRandomJokesJSON = (request, response, params) => {
+  const { limit } = params.query;
+  const acceptedTypes = request.headers.accept.split(',');
+  const randomJokes = getRandomJoke(limit);
+  if (acceptedTypes.includes('text/xml')) {
+    let jokeXML = '<joke>';
+    const jokeParse = JSON.parse(randomJokes);
+    jokeParse.forEach((joke) => {
+      const xml = getXML(joke);
+      jokeXML += xml;
+    });
+    jokeXML += '</joke>';
+    // console.log(jokeXML);
+
+    respond(request, response, jokeXML, 'text/xml');
+  } else {
+    respond(request, response, randomJokes, 'application/json');
+  }
+  // console.log(acceptedTypes.length);
+
+  // getTypes(acceptedTypes)
+
+  /* response.writeHead(200, { 'Content-Type': 'application/json' });
+  response.write(getRandomJoke(limit));
+  response.end(); */
+  // . console.log(acceptedTypes['text/xml']);
+};
 
 module.exports = {
-  getRandomJokesJSON
+  getRandomJokesJSON,
+  getRandomJoke,
+
 };
