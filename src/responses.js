@@ -33,6 +33,16 @@ const jokes = [
 
 ];
 
+const notFound = (request, response) => {
+  const responseJSON = {
+    message: 'The page you are looking for was not found!',
+    id: 'notFound',
+  };
+  response.writeHead(404, request.headers);
+  response.write(JSON.stringify(responseJSON));
+  response.end();
+};
+
 const respond = (request, response, content, type) => {
   response.writeHead(200, { 'Content-Type': type });
   response.write(content);
@@ -63,35 +73,57 @@ const getXML = (joke) => {
   </joke>`;
 };
 
-const getRandomJokesJSON = (request, response, params, acceptedTypes) => {
+const respondMeta = (request, response, status, content, type) => {
+  const getBinarySize = string => Buffer.byteLength(string, 'utf8');
+  let headers = {
+    'Content-Type':type,
+    'Content-Length':getBinarySize(content),
+    ...request.headers
+  }
+  // no content to send, just headers!
+  response.writeHead(status, headers);
+  response.end();
+};
+
+
+
+const getJokesXML = (randomJokes)=>{
+  let jokeXML = '<joke>';
+  const jokeParse = JSON.parse(randomJokes);
+  jokeParse.forEach((joke) => {
+    const xml = getXML(joke);
+    jokeXML += xml;
+  });
+  jokeXML += '</joke>';
+  return jokeXML
+}
+
+const getRandomJokesMeta = (request, response, params, acceptedTypes, httpMethod) => {
   const { limit } = params.query;
   const randomJokes = getRandomJoke(limit);
   if (acceptedTypes.includes('text/xml')) {
-    let jokeXML = '<joke>';
-    const jokeParse = JSON.parse(randomJokes);
-    jokeParse.forEach((joke) => {
-      const xml = getXML(joke);
-      jokeXML += xml;
-    });
-    jokeXML += '</joke>';
-    // console.log(jokeXML);
+    let xmlContent = getJokesXML(randomJokes)
+    respondMeta(request, response, 200, xmlContent, 'text/xml');
+  } else {
+    respondMeta(request, response, 200, randomJokes, 'application/json');
+  }
+};
 
-    respond(request, response, jokeXML, 'text/xml');
+const getRandomJokesJSON = (request, response, params, acceptedTypes, httpMethod) => {
+  const { limit } = params.query;
+  const randomJokes = getRandomJoke(limit);
+  if (acceptedTypes.includes('text/xml')) {
+      let xmlContent = getJokesXML(randomJokes)
+    respond(request, response, xmlContent, 'text/xml');
   } else {
     respond(request, response, randomJokes, 'application/json');
   }
-  // console.log(acceptedTypes.length);
-
-  // getTypes(acceptedTypes)
-
-  /* response.writeHead(200, { 'Content-Type': 'application/json' });
-  response.write(getRandomJoke(limit));
-  response.end(); */
-  // . console.log(acceptedTypes['text/xml']);
+ 
 };
 
 module.exports = {
   getRandomJokesJSON,
-  
+  getRandomJokesMeta,
+  notFound
 
 };
