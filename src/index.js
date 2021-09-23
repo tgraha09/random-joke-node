@@ -3,7 +3,7 @@
 const http = require('http');
 const url = require('url');
 const htmlHandler = require('./htmlResponses');
-const jsonHandler = require('./jsonResponses');
+const responseHandler = require('./responses');
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
@@ -31,8 +31,8 @@ const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
 const urlStruct = {
   '/': htmlHandler.getIndexResponse,
-  '/random-joke': jsonHandler.getRandomJokesJSON,
-  '/random-jokes': jsonHandler.getRandomJokesJSON,
+  '/random-joke': responseHandler.getRandomJokesJSON,
+  '/random-jokes': responseHandler.getRandomJokesJSON,
   notFound: htmlHandler.get404Response,
 };
 // https://github.com/tonethar/IGME-430-Fall-2021/blob/main/hw-notes/HW-random-jokes-plus.md#phase3
