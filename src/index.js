@@ -30,20 +30,21 @@ const port = process.env.PORT || process.env.NODE_PORT || 3000;
 // we will also doing our query parameter validation here
 
 const urlStruct = {
-  GET:{
+  GET: {
     '/': htmlHandler.getIndexResponse,
+    '/joke-client.html': htmlHandler.getJokeClient,
     '/random-joke': responseHandler.getRandomJokesJSON,
     '/random-jokes': responseHandler.getRandomJokesJSON,
     '/default-styles.css': htmlHandler.getDefaultCSS,
     notFound: htmlHandler.get404Response,
   },
-  HEAD:{
+  HEAD: {
     '/random-joke': responseHandler.getRandomJokesMeta,
     '/random-jokes': responseHandler.getRandomJokesMeta,
     notFound: responseHandler.notFound,
-  }
+  },
 };
-//https://github.com/tonethar/IGME-430-Fall-2021/blob/main/hw-notes/HW-random-jokes-plus.md#phase4
+// https://github.com/tonethar/IGME-430-Fall-2021/blob/main/hw-notes/HW-random-jokes-plus.md#phase4
 // 7 - this is the function that will be called every time a client request comes in
 // this time we will look at the `pathname`, and send back the appropriate page
 // note that in this course we'll be using arrow functions 100% of the time in our server-side code
@@ -54,8 +55,8 @@ const onRequest = (request, response) => {
   const { pathname } = params;
   const acceptedTypes = request.headers.accept.split(',');
   console.log(path, pathname);
-  //console.log(request.headers);
-  const httpMethod = request.method
+  // console.log(request.headers);
+  const httpMethod = request.method;
   if (urlStruct[httpMethod][pathname]) {
     urlStruct[httpMethod][pathname](request, response, params, acceptedTypes, httpMethod);
   } else {
